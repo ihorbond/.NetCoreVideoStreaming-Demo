@@ -11,35 +11,20 @@ namespace VideoStreaming.Controllers
 {
     [Route("api/v1/[controller]")]
     [ApiController]
-    public class StreamingController : ControllerBase
+    public class VideosController : ControllerBase
     {
         private readonly IStreamingService _streamingService;
 
-        public StreamingController(IStreamingService streamingService)
+        public VideosController(IStreamingService streamingService)
         {
             _streamingService = streamingService;
-        }
-
-        /// <summary>
-        /// Stream video from server by name
-        /// </summary>
-        /// <param name="name"></param>
-        /// <returns>mp4 stream</returns>
-        [HttpGet("{name}")]
-        [ProducesResponseType(StatusCodes.Status200OK)]
-        [ProducesResponseType(StatusCodes.Status400BadRequest)]
-        public FileStreamResult GetVideoByName(string name)
-        {
-            Stream stream = _streamingService.GetVideoByName(name);
-
-            return new FileStreamResult(stream, "video/mp4");
         }
 
         /// <summary>
         /// Stream random video from server
         /// </summary>
         /// <returns>mp4 stream</returns>
-        [HttpGet("random")]
+        [HttpGet]
         [ProducesResponseType(StatusCodes.Status200OK)]
         [ProducesResponseType(StatusCodes.Status400BadRequest)]
         public FileStreamResult GetRandomVideo()
@@ -50,7 +35,22 @@ namespace VideoStreaming.Controllers
         }
 
         /// <summary>
-        /// Stream video from at provided web uri
+        /// Stream video from server by name without extension
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>mp4 stream</returns>
+        [HttpGet("local")]
+        [ProducesResponseType(StatusCodes.Status200OK)]
+        [ProducesResponseType(StatusCodes.Status400BadRequest)]
+        public FileStreamResult GetVideoByName([FromQuery] string name)
+        {
+            Stream stream = _streamingService.GetVideoByName(name);
+
+            return new FileStreamResult(stream, "video/mp4");
+        }
+
+        /// <summary>
+        /// Stream video at provided web uri. Accepted formats: *.mp4
         /// </summary>
         /// <param name="uri"></param>
         /// <returns>mp4 stream</returns>

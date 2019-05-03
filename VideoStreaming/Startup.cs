@@ -35,8 +35,9 @@ namespace VideoStreaming
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
             services.AddSwaggerDocument(config => {
                 config.Title = "Video streaming API";
-                config.AllowNullableBodyParameters = false;
                 config.Description = "API to test video streaming with .NET Core";
+                //config.RequireParametersWithoutDefault = true;
+                //config.AllowNullableBodyParameters = true;
             });
 
             IFileProvider physicalFileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
@@ -84,6 +85,7 @@ namespace VideoStreaming
             app.UseSwagger();
             app.UseSwaggerUi3(config => {
                 config.Path = "/api/help";
+                config.EnableTryItOut = false;
             });
             app.UseHttpsRedirection();
             app.UseMvc();

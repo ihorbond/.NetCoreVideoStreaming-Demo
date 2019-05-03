@@ -25,7 +25,7 @@ namespace VideoStreaming.Services
 
         public Stream GetVideoByName(string name)
         {
-            IFileInfo file = _fileProvider.GetFileInfo(Path.Combine(PATH_TO_VIDEOS, name));
+            IFileInfo file = _fileProvider.GetFileInfo(Path.Combine(PATH_TO_VIDEOS, name + ".mp4"));
 
             return file.Exists ? file.CreateReadStream() : throw new FileNotFoundException("Video not found");
         }
