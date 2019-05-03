@@ -33,6 +33,7 @@ namespace VideoStreaming
         public void ConfigureServices(IServiceCollection services)
         {
             services.AddMvc().SetCompatibilityVersion(CompatibilityVersion.Version_2_2);
+            services.AddSwaggerDocument();
 
             IFileProvider physicalFileProvider = new PhysicalFileProvider(Directory.GetCurrentDirectory());
 
@@ -76,6 +77,8 @@ namespace VideoStreaming
                 app.UseHsts();
             }
 
+            app.UseSwagger();
+            app.UseSwaggerUi3();
             app.UseHttpsRedirection();
             app.UseMvc();
         }
