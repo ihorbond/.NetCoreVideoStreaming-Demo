@@ -8,7 +8,7 @@ namespace VideoStreaming.Services
 {
     public interface IStreamingService
     {
-        Task<Stream> GetVideoByName(string name);
+        Stream GetVideoByName(string name);
 
     }
 }
