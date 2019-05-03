@@ -9,6 +9,7 @@ namespace VideoStreaming.Services
     public interface IStreamingService
     {
         Stream GetVideoByName(string name);
+        Stream GetRandomVideo();
 
     }
 }

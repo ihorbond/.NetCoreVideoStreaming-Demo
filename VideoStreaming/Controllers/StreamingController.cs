@@ -28,5 +28,13 @@ namespace VideoStreaming.Controllers
             return new FileStreamResult(stream, "video/mp4");
         }
 
+        [HttpGet("random")]
+        public FileStreamResult GetRandomVideo()
+        {
+            Stream stream = _streamingService.GetRandomVideo();
+
+            return new FileStreamResult(stream, "video/mp4");
+        }
+
     }
 }
