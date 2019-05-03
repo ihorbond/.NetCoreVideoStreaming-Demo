@@ -19,6 +19,11 @@ namespace VideoStreaming.Controllers
             _streamingService = streamingService;
         }
 
+        /// <summary>
+        /// Stream video from server by name
+        /// </summary>
+        /// <param name="name"></param>
+        /// <returns>mp4 stream</returns>
         [HttpGet("{name}")]
         public FileStreamResult GetVideoByName(string name)
         {
@@ -27,6 +32,10 @@ namespace VideoStreaming.Controllers
             return new FileStreamResult(stream, "video/mp4");
         }
 
+        /// <summary>
+        /// Stream random video from server
+        /// </summary>
+        /// <returns>mp4 stream</returns>
         [HttpGet("random")]
         public FileStreamResult GetRandomVideo()
         {
@@ -35,6 +44,11 @@ namespace VideoStreaming.Controllers
             return new FileStreamResult(stream, "video/mp4");
         }
 
+        /// <summary>
+        /// Stream video from at provided web uri
+        /// </summary>
+        /// <param name="uri"></param>
+        /// <returns>mp4 stream</returns>
         [HttpGet("web")]
         public async Task<FileStreamResult> GetStreamFromWeb([FromQuery] string uri)
         {
