@@ -55,7 +55,7 @@ namespace VideoStreaming
                         var ex = context.Features.Get<IExceptionHandlerPathFeature>();
                         if (ex?.Error is NullReferenceException)
                             context.Response.StatusCode = 404;
-                        else if (ex?.Error is InvalidOperationException)
+                        else if (ex?.Error is InvalidOperationException || ex?.Error is FileNotFoundException)
                             context.Response.StatusCode = 400;
                         else
                             context.Response.StatusCode = 500;
@@ -65,7 +65,7 @@ namespace VideoStreaming
                         ApiError error = new ApiError()
                         {
                             Code = context.Response.StatusCode,
-                            Message = env.IsDevelopment() ? ex?.Error.Message : "An unexpected error happened. Try again later."
+                            Message = context.Response.StatusCode == 500 ? "An unexpected error happened. Try again later." : ex?.Error.Message
                         };
 
                         await context.Response.WriteAsync(JsonConvert.SerializeObject(error)).ConfigureAwait(false);
