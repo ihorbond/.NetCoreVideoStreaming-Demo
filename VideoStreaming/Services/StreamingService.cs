@@ -4,6 +4,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -26,7 +27,7 @@ namespace VideoStreaming.Services
         {
             IFileInfo file = _fileProvider.GetFileInfo(Path.Combine(PATH_TO_VIDEOS, name));
 
-            return file.Exists ? file.CreateReadStream() : throw new FileNotFoundException();
+            return file.Exists ? file.CreateReadStream() : throw new FileNotFoundException("Video not found");
         }
 
         public Stream GetRandomVideo()
@@ -43,6 +44,20 @@ namespace VideoStreaming.Services
             IFileInfo randomVideo = videos.ElementAt(randomNumber);
 
             return randomVideo.CreateReadStream();
+        }
+
+        public async Task<Stream> StreamFromWeb(string uri)
+        {
+            string[] uriParts = uri.Split('.');
+            string format = uriParts[uriParts.Length - 1];
+
+            if (uriParts.Length < 2 && string.Equals(format, "mp4", StringComparison.OrdinalIgnoreCase))
+                throw new InvalidOperationException("URI is invalid");
+
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, uri);
+            HttpResponseMessage response = _client.SendAsync(request).Result;
+
+            return response.IsSuccessStatusCode ? await _client.GetStreamAsync(uri) : throw new HttpRequestException("Web resource doesn't exist");
         }
 
         ~StreamingService()

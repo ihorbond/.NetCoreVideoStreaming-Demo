@@ -19,7 +19,6 @@ namespace VideoStreaming.Controllers
             _streamingService = streamingService;
         }
 
-
         [HttpGet("{name}")]
         public FileStreamResult GetVideoByName(string name)
         {
@@ -32,6 +31,14 @@ namespace VideoStreaming.Controllers
         public FileStreamResult GetRandomVideo()
         {
             Stream stream = _streamingService.GetRandomVideo();
+
+            return new FileStreamResult(stream, "video/mp4");
+        }
+
+        [HttpGet("web")]
+        public async Task<FileStreamResult> GetStreamFromWeb([FromQuery] string uri)
+        {
+            Stream stream = await _streamingService.StreamFromWeb(uri).ConfigureAwait(false);
 
             return new FileStreamResult(stream, "video/mp4");
         }

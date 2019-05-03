@@ -10,6 +10,6 @@ namespace VideoStreaming.Services
     {
         Stream GetVideoByName(string name);
         Stream GetRandomVideo();
-
+        Task<Stream> StreamFromWeb(string uri);
     }
 }
