@@ -49,9 +49,8 @@ namespace VideoStreaming.Services
         public async Task<Stream> StreamFromWeb(string uri)
         {
             string[] uriParts = uri.Split('.');
-            string format = uriParts[uriParts.Length - 1];
 
-            if (uriParts.Length < 2 && string.Equals(format, "mp4", StringComparison.OrdinalIgnoreCase))
+            if (uriParts.Length < 2 || !string.Equals(uriParts[uriParts.Length - 1], "mp4", StringComparison.OrdinalIgnoreCase))
                 throw new InvalidOperationException("URI is invalid");
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Head, uri);
